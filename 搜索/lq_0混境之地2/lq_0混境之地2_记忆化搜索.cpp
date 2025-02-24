@@ -23,19 +23,23 @@ bool dfs(int x, int y, int flag){
         st[xx][yy] = true;
         
         if(flag){
-            if(mp[xx][yy] == '.' && dfs(xx, yy, 1)) 
-                return dp[x][y][1] = true;
+            if(mp[xx][yy] == '.' && dfs(xx, yy, 1)){
+                dp[x][y][1] = true; return true;
+            }      
         }
         else{
-            if(mp[xx][yy] == '.' && dfs(xx, yy, 0))
-                return dp[x][y][0] = true;
-            if(mp[xx][yy] == '#' && dfs(xx, yy, 1))
-                return dp[x][y][1] = true;
+            if(mp[xx][yy] == '.' && dfs(xx, yy, 0)){
+                dp[x][y][0] = true; return true;
+            }     
+            if(mp[xx][yy] == '#' && dfs(xx, yy, 1)){
+                dp[x][y][1] = true; return true; 
+            }     
         }
         st[xx][yy] = false;
     }
 
-    return dp[x][y][flag] = false;
+    dp[x][y][flag] = false;
+    return false;
 }
 
 
