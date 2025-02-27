@@ -8,6 +8,7 @@ int s[N];//异或前缀和
 unordered_map<int,int> prime;
 
 bool check(int x){
+    //check函数时间复杂度为O(根号n)
     //cout << x << endl;
     for(int i = 2; i * i <= x; i++){
         while(x % i == 0){
