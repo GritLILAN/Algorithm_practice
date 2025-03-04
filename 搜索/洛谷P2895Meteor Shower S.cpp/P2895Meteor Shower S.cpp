@@ -26,6 +26,7 @@ bool bfs(){
 
         if(rock[x][y] == -1){
             cout << dis[x][y] << endl; return true;;
+            //如果该点安全，直接返回true
         }
         for(int i = 0; i < 4; i++){
             int xx = x + dx[i], yy = y + dy[i];
@@ -43,7 +44,7 @@ bool bfs(){
 
 int main(){
     cin >> m;
-    memset(rock, -1, sizeof rock);
+    memset(rock, -1, sizeof rock);//没有被砸到或烧焦的格子赋值-1
     for(int i = 0; i < m; i++){
         int x, y, t;
         cin >> x >> y >> t;
