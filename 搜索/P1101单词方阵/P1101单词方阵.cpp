@@ -13,12 +13,14 @@ char res[N][N];
 vector<PII> loc;
 
 void dfs(int x, int y, int cnt, int dir){
-
+    //cout << cnt << endl;
     if(dir == -1){
         for(int i = 0; i < 8; i++){
             int xx = x + dx[i], yy = y + dy[i];
             if(xx < 1 || xx > n || yy < 1 || yy > n) continue;
             if(a[xx][yy] == s[1]){
+                //cout << xx << ' ' << yy << endl;
+                //cout << "s[1]" << endl;
                 loc.push_back({xx,yy});
                 dfs(xx, yy, cnt + 1, i);
                 loc.pop_back();
@@ -26,8 +28,9 @@ void dfs(int x, int y, int cnt, int dir){
         }
     }
     else{
-        if(cnt == 7){
+        if(cnt == 6){
             //处理res数组
+            //cout << "yes" << endl;
             for(int i = 0 ; i < loc.size(); i++){
                 res[loc[i].first][loc[i].second] = s[i];
             }
@@ -56,6 +59,11 @@ int main(){
     for(int i = 1; i <= n; i++){
         for(int j = 1; j <= n; j++){
             a[i][j] = tmp[i][j - 1];
+        }
+    }
+
+    for(int i = 1; i <= n; i++){
+        for(int j = 1; j <= n; j++){
             if(a[i][j] == 'y'){
                 loc.clear();
                 loc.push_back({i,j});
@@ -63,6 +71,7 @@ int main(){
             }
         }
     }
+
 
     for(int i = 1; i <= n; i++){
         for(int j = 1; j <= n; j++){
