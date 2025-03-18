@@ -5,7 +5,7 @@ const int N = 1e5 + 5;
 
 int n, k;
 vector<int> g[N];
-int siz[N];
+int siz[N];//节点i的子树中与i联通的红色节点个数
 int use = 0;
 
 void dfs(int u, int f, int mid){
@@ -17,8 +17,8 @@ void dfs(int u, int f, int mid){
         siz[u] += siz[v];
     }
     if(siz[u] > mid){
-        use++;
-        siz[u] = 0;
+        use++;//紫色节点+1
+        siz[u] = 0;//标记这个子树为独立的连通块
     }
 }
 
@@ -26,7 +26,7 @@ bool check(int mid){
     use = 0;
     for(int i = 1; i <= n; i++) siz[i] = 1;
     dfs(1, 0, mid);
-    return use <= k;
+    return use <= k;//染紫的节点数少，说明连通块大小mid太大
 }
 
 
