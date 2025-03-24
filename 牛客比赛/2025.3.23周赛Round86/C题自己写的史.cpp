@@ -31,11 +31,14 @@ int main(){
             }
             if(s[i] == '0' && s[i - 1] == '1' && s[i + 1] == '1'){
                 res++;
-                if(pre[last] == pre[i]) res; 
+                if(pre[last] == pre[i]) res -= 2; 
                 last = i;
             }
         }
-
+        if(n & 1){
+            if(res & 1) res--;
+        }
+        cout << res << endl;
     }
 
 
