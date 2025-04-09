@@ -9,14 +9,17 @@ int main(){
         int x; cin >> x;
         int z = 0;
         int base = 1;
+        bool f = false;
         while(x){
             int u = !(x & 1);
+            if(u) f = true;
             z += u * base;
             base *= 2;
             x >>= 1;
             if(!x) break;
         }
-        cout << z << endl;
+        if(!f) cout << -1 << endl;
+        else cout << z << endl;
     }
 
 
