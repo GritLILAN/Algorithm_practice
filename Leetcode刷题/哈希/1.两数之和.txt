@@ -1,0 +1,37 @@
+（1）暴力做法：
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        int index1, index2;
+        vector<int> res;
+        int n = nums.size();
+        for(int i = 0; i < n; i++){
+            for(int j = i + 1; j < n; j++){
+                if(nums[i] + nums[j] == target){
+                   index1 = i;
+                   index2 = j;
+                }
+            }
+        }
+        res.push_back(index1);
+        res.push_back(index2);
+        return res;
+    }
+};
+
+
+（2）哈希
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+       unordered_map<int,int> mp;
+       int n = nums.size();
+       for(int i = 0; i < n; i++){
+            int x = nums[i];
+            int y = target - x;
+            if(mp.count(y)) return {mp[y], i};
+            mp[x] = i;
+       }
+       return {};
+    }
+};
