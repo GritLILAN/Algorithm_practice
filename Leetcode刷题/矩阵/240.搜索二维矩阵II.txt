@@ -1,0 +1,47 @@
+(1)暴力
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        bool f = false;
+        int m = matrix.size();
+        int n = matrix[0].size();
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(matrix[i][j] == target){
+                    f = true; break;
+                }
+            }
+        }
+        return f;
+    }
+};
+
+（2）按行二分做法
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        for(auto& row:matrix){//注意要加&,否则会MLE
+            auto it = lower_bound(row.begin(), row.end(), target);
+            if(it != row.end() && *it == target) return true;
+        }
+        return false;
+    }
+};
+
+（3）数学规律，思维
+//将(x,y)坐标固定在一个最大，一个最小，从这个点开始搜索。比如从右上角(0, n - 1)开始。
+//满足大小的绝对性
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int m = matrix.size();
+        int n = matrix[0].size();
+        int x = 0, y = n - 1;
+        while(x < m && y >= 0){
+            if(matrix[x][y] == target) return true;
+            else if(matrix[x][y] > target) y--;
+            else x++;
+        }
+        return false;
+    }
+};

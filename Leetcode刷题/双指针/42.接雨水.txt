@@ -1,0 +1,45 @@
+(1)方法1：双指针
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int res = 0;
+        int l = 0, r = height.size() - 1;
+        int max_left = height[l], max_right = height[r];
+        while(l < r){
+            if(height[l] < height[r]){
+                res += max_left - height[l];
+                l++;
+                max_left = max(max_left, height[l]);
+            }
+            else{
+                res += max_right - height[r];
+                r--;
+                max_right = max(max_right, height[r]);
+            }
+        }
+        return res;
+    }
+};
+
+（2）方法2：动态规划
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int res = 0;
+        int n = height.size();
+        vector<int> leftmax(n), rightmax(n);
+        leftmax[0] = height[0];
+        for(int i = 1; i < n; i++){
+            leftmax[i] = max(height[i], leftmax[i - 1]);
+        }
+        rightmax[n - 1] = height[n - 1];
+        for(int i = n - 2; i >= 0; i--){
+            rightmax[i] = max(height[i], rightmax[i + 1]);
+        }
+        for(int i = 0; i < n; i++){
+            int minn = min(leftmax[i], rightmax[i]);
+            res += max(0, minn - height[i]);
+        }
+        return res;
+    }
+};

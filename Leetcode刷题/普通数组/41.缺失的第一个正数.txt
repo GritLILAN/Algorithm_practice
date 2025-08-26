@@ -1,0 +1,60 @@
+（1）错误版本
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        int n = nums.size();
+        int res = 0;
+        sort(nums.begin(), nums.end());
+        if(nums[0]  > 1 || nums[n - 1] <= 0){
+            res = 1; cout << "c1" << endl;
+        }
+        else if(n == 1){
+            if(nums[0] == 1) res = 2;
+            else res = 1;
+        }
+        else{
+            bool fst = true;
+            for(int i = 0; i < n; i++){
+                if(n == 0 || nums[i] <= 0) continue;
+                if(nums[i] == nums[i - 1]) continue;
+                if(fst){
+                    fst = false;
+                    if(nums[i] != 1){
+                        cout << " c2" << endl;
+                        res = 1; break;
+                    }
+                }
+                else{
+                    if(nums[i] != nums[i - 1] + 1){
+                        res = nums[i - 1] + 1;
+                        cout << "c2" << endl;break;
+                    }
+                }
+            }
+            if(!res){
+                res = nums[n - 1] + 1;
+                cout << "c3 " << endl;
+            } 
+        }
+        return res;
+    }
+};
+
+（2）正解
+class Solution {
+public:
+    int firstMissingPositive(vector<int>& nums) {
+        unordered_map<int,int> mp;
+        int res = 1;
+        int n = nums.size();
+        for(int i = 0; i < n; i++){
+            mp[nums[i]] = 1;
+        }
+        for(int i = 1; i <= n + 1; i++){
+            if(!mp.count(i)){
+                res = i; break;
+            }
+        }
+        return res;
+    }
+};
