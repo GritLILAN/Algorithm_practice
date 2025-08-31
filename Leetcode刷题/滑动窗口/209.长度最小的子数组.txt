@@ -1,0 +1,71 @@
+(1)滑动窗口基础做法
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n = nums.size();
+        int sum = 0;
+        int res = 1e5 + 10;
+        int l = 0, r = 0;
+        for(;r < n; r++){
+            sum += nums[r];
+            while(l <= r && sum >= target){
+                res = min(res, r - l + 1);
+                sum -= nums[l];
+                l++;
+            }
+           
+        }
+        if(res == 1e5 + 10) res = 0;
+        return res;
+    }
+};
+
+（2）前缀和+二分（固定l找r）
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n = nums.size();
+        vector<int> sum(n + 1, 0);
+        int res = 1e5 + 10;
+        sum[0] = 0;
+        for(int i = 1; i <= n; i++){
+            sum[i] = sum[i - 1] + nums[i - 1];
+        }
+        for(int l = 0; l < n; l++){
+            int need = target + sum[l];
+            int r = lower_bound(sum.begin() + l + 1, sum.end(), need) - sum.begin();
+            if(r != n + 1) res = min(res, r - l);
+        }
+        if(res == 1e5 + 10) res = 0;
+        return res;
+    }
+};
+
+//sum[r] - sum[l - 1] >= target
+// r - (l + 1) + 1
+// r - l
+
+（3）前缀和+二分（固定r找l）
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int n = nums.size();
+        vector<int> sum(n + 1, 0);
+        int res = 1e5 + 10;
+        sum[0] = 0;
+        for(int i = 1; i <= n; i++){
+            sum[i] = sum[i - 1] + nums[i - 1];
+        }
+        for(int r = 1; r <= n; r++){
+            int need = sum[r] - target;
+            int l = upper_bound(sum.begin(), sum.end(), need) - sum.begin() - 1;
+            if(l >= 0) res = min(res, r - l);
+        }
+        if(res == 1e5 + 10) res = 0;
+        return res;
+    }
+};
+
+//sum[r] - sum[l - 1] >= target
+// r - (l + 1) + 1
+// r - l

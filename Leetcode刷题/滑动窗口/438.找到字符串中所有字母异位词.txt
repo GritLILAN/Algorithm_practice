@@ -1,0 +1,44 @@
+（1）自己的史山代码（没过）
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        int k = p.size();
+        int n = s.size();
+        unordered_map<char, int> st;
+        vector<int> res;
+        deque<char> q;
+        for(int i = 0; i < k; i++){
+            st.insert({p[i], -1});
+        }
+        for(int i = 0; i < n; i++){
+            if(st.count(s[i]) && st[s[i]] == -1){//属于p而且在窗口中第一次出现
+                st[s[i]] = 1;
+                q.push_back(s[i]);
+                if(i - k + 1 >= 0 && q.size() == k) res.push_back(i - k + 1);
+                
+            }
+            else if(st.count(s[i]) && st[s[i]] != -1){//属于p而且窗口中已经有了
+                st[s[i]]++;
+                q.push_back(s[i]);
+                while(st[s[i]] > 1 && q.size()){
+                    auto u = q.front();
+                    st[u]--;
+                    q.pop_front();
+                    if(i - k + 1 >= 0 && q.size() == k) res.push_back(i - k + 1);
+                }
+            }
+            else{
+                for(auto u : q){
+                    st[u] = -1;
+                }
+                q.clear();
+                
+            }
+            if(i - k >= 0 && q.size() == k + 1) q.pop_front(); 
+        }
+        return res;
+    }
+};
+
+
+（2）题解

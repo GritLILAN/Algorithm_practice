@@ -1,0 +1,44 @@
+(1)前缀和枚举（朴素）
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        int res = 0;
+        int n = nums.size();
+        vector<int> sum(n);
+        sum[0] = nums[0];
+        for(int i = 1; i < n; i++){
+            sum[i] = sum[i - 1] + nums[i];
+        }
+        for(int j = 0; j < n; j++){
+            if(sum[j] == k) res++;
+        }
+        for(int i = 1; i < n; i++){
+            for(int j = i; j < n; j++){
+                if(sum[j] - sum[i - 1] == k) res++;
+            }
+        }
+        return res;
+    }
+};
+
+（2）前缀和+哈希
+class Solution {
+public:
+    int subarraySum(vector<int>& nums, int k) {
+        int res = 0;
+        int sum = 0;
+        int n = nums.size();
+        unordered_map<int,int> mp;
+        mp[0] = 1;
+        for(auto x : nums){
+            sum += x;
+            if(mp.count(sum - k)) res += mp[sum - k];
+            mp[sum]++;
+        }
+
+        return res;
+    }
+};
+
+//sum[right] - sum[left - 1] = k
+//sum[right] - k = sum[left - 1]
