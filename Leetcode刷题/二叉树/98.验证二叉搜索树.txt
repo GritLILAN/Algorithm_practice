@@ -1,0 +1,76 @@
+(1)自己写的依托（从下往上递归更新maxx和minn）
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    unordered_map<TreeNode*, int> maxx;
+    unordered_map<TreeNode*, int> minn;
+    bool dfs(TreeNode* node){
+        if(node == nullptr) return true;
+        maxx[node] = node->val;
+        minn[node] = node->val;
+        bool lcheck = dfs(node->left);
+        bool rcheck = dfs(node->right);
+        if(node->left != nullptr){
+            maxx[node] = max(maxx[node], maxx[node->left]);
+            minn[node] = min(minn[node], minn[node->left]);
+        }
+        if(node->right != nullptr){
+            minn[node] = min(minn[node], minn[node->right]);
+            maxx[node] = max(maxx[node], maxx[node->right]);
+        }
+
+
+        return lcheck && rcheck && (node->left == nullptr || maxx[node->left] < node->val) && (node->right == nullptr || minn[node->right] > node->val);
+    }
+
+    bool isValidBST(TreeNode* root) {
+        if(root->left == nullptr && root->right == nullptr) return true;
+        maxx[nullptr] = INT_MIN;
+        minn[nullptr] = INT_MAX;
+        return dfs(root);
+    }
+};
+
+（2）题解1（从上往下更新lower和upper）
+class Solution {
+public:
+
+    bool dfs(TreeNode* node, long long lower, long long upper){
+       if(node == nullptr) return true;
+       if(node->val <= lower || node->val >= upper) return false;
+
+        return dfs(node->left, lower, node->val) && dfs(node->right, node->val, upper);
+    }
+
+    bool isValidBST(TreeNode* root) {
+        return dfs(root, LONG_MIN, LONG_MAX);
+    }
+};
+
+（3）题解2（中序遍历判递增）
+class Solution {
+public:
+    long long  prev = LONG_MIN;
+    bool inorder(TreeNode* node){
+        if(node == nullptr) return true;
+        if(!inorder(node->left)) return false;
+
+        if(prev >= node->val) return false;
+        prev = node->val;
+        return inorder(node->right);
+    }
+
+    bool isValidBST(TreeNode* root) {
+        return inorder(root);
+    }
+};

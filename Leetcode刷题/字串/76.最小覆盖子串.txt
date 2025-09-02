@@ -1,0 +1,41 @@
+class Solution {
+public:
+    unordered_map<char, int> tcnt;
+    unordered_map<char, int> scnt;
+
+    bool check(){
+        for(auto tt : tcnt){
+            if(scnt[tt.first] < tt.second) return false;
+        }
+        return true;
+    }
+
+    string minWindow(string s, string t) {
+        int n = s.size();
+        int k = t.size();
+        int minn = 1e5 + 10;
+        int ansL = -1;
+
+        for(int i = 0; i < k; i++){
+            tcnt[t[i]] ++;
+        }
+        int l = 0, r = 0;
+        for(int r = 0; r < n; r++){
+            if(tcnt.count(s[r])) scnt[s[r]]++;
+            if(check()){
+                while(check() && l <= r){
+                    int len = r - l + 1;
+                    if(len < minn){
+                        minn = len;
+                        ansL = l;
+                    }
+                    if(tcnt.count(s[l])) scnt[s[l]]--;
+                    l++;
+                }
+            }
+        }
+        return ansL == -1 ? string() : s.substr(ansL, minn);
+    }
+};
+
+//A D O B E C O D E B A N C
