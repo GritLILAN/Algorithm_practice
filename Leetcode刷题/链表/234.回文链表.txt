@@ -1,0 +1,30 @@
+（1）利用额外数组判断回文
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        vector<int> vec;
+        ListNode* p = head;
+        if(head == NULL) return true;
+        while(p != NULL){
+            vec.push_back(p->val);
+            p = p->next;
+        }
+        int n  = vec.size();
+        for(int i = 0; i < (n + 1)/2; i++){
+            if(vec[i] != vec[n - i - 1]) return false;
+        }
+        return true;
+    }
+};
+
+（2）递归+迭代
