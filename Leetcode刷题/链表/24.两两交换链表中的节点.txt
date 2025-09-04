@@ -1,0 +1,37 @@
+（1）迭代做法
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        ListNode* p = new ListNode();
+        ListNode* pre = nullptr;
+        p = head;
+        bool first = true;
+        while(p != nullptr){
+            if(p->next){
+                ListNode* q = p->next;
+                p->next = q->next;
+                q->next = p;
+                if(first){
+                    head = q;
+                    first = false;
+                }
+                else pre->next = q;
+                pre = p;
+            }
+            p = p->next;
+        }
+        return head;
+    }
+};
+
+（2）递归做法
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        if(head == nullptr || !head->next) return head;
+        ListNode* q = head->next;
+        head->next = swapPairs(q->next);
+        q->next = head;
+        return q;
+    }
+};

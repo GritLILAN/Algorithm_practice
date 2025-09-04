@@ -1,0 +1,98 @@
+（1）自己写的石山代码（vector临时数组计算）
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        vector<int> a1;
+        vector<int> a2;
+        ListNode* p = l1;
+        while(p != nullptr){
+            a1.push_back(p->val);
+            p = p->next;
+        }
+        p = l2;
+        while(p != nullptr){
+            a2.push_back(p->val);
+            p = p->next;
+        }
+        int n = a1.size();
+        int m = a2.size();
+        int cnt = 0;
+        int len = min(n, m);
+        ListNode* head = new ListNode();
+        p = head;
+
+        int carry = 0;
+        while(cnt < n && cnt < m){
+            
+            int sum = (a1[cnt] + a2[cnt] + carry) % 10;
+            ListNode* q = new ListNode(sum); 
+            carry = (a1[cnt] + a2[cnt] + carry) / 10;
+            p->next = q;
+            p = p->next;
+            cnt++;
+        }
+        while(cnt < n){
+            int sum = (a1[cnt] + carry) % 10;
+            ListNode* q = new ListNode(sum); 
+            carry = (a1[cnt] + carry) / 10;
+            p->next = q;
+            p = p->next;
+            cnt++;
+        } 
+        while(cnt < m){
+            int sum = (a2[cnt] + carry) % 10;
+            ListNode* q = new ListNode(sum); 
+            carry = (a2[cnt] + carry) / 10;
+            p->next = q;
+            p = p->next;
+            cnt++;
+        }
+        if(carry){
+            p->next = new ListNode(carry);
+        }
+        return head->next;
+    }
+};
+
+（2）题解（直接模拟）
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* head = nullptr;
+        ListNode* p = head;
+        int carry = 0;
+        while(l1 || l2){
+            int n1 = !l1 ? 0 : l1->val;
+            int n2 = !l2 ? 0 : l2->val;
+            int sum = n1 + n2 + carry;
+            if(!head){
+                head = p = new ListNode(sum % 10);
+            }
+            else{
+                p->next = new ListNode(sum % 10);
+                p = p->next;
+            }
+            carry = sum / 10;
+            if(l1){
+                l1 = l1->next;  
+            }
+            if(l2){
+                l2 = l2->next;
+            }       
+        }
+        if(carry){
+            p->next = new ListNode(carry);
+        }
+        return head;
+    }
+};
